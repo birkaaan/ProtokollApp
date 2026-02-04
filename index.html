@@ -3,118 +3,68 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Begehungsprotokoll</title>
+  <title>ProtokollApp</title>
 
   <style>
-    :root {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --border: #e6e8ef;
-      --border2: #d7dbe7;
-      --primary: #1f6fff;
-      --danger: #ff3b30;
-      --muted: #666;
-      --shadow: 0 1px 0 rgba(0,0,0,0.03);
+    :root{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      --bg:#f6f7fb;--card:#fff;--border:#e6e8ef;--border2:#d7dbe7;
+      --primary:#1f6fff;--danger:#ff3b30;--muted:#666;--shadow:0 1px 0 rgba(0,0,0,.03);
     }
-    body { margin: 0; background: var(--bg); color: #111; }
-    header {
-      padding: 14px 14px;
-      background: white;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 10;
+    body{margin:0;background:var(--bg);color:#111}
+    header{padding:14px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+    h1{margin:0;font-size:18px}
+    main{max-width:980px;margin:12px auto;padding:0 12px 28px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .sep{height:1px;background:#eef0f6;margin:10px 0}
+    label{display:block;font-size:13px;color:#333;margin-bottom:6px;font-weight:800}
+    input[type="text"],input[type="number"],textarea,select{
+      width:100%;box-sizing:border-box;padding:14px 12px;border:1px solid var(--border2);
+      border-radius:14px;background:#fff;font-size:16px;outline:none
     }
-    h1 { margin: 0; font-size: 18px; }
-    main { max-width: 980px; margin: 12px auto; padding: 0 12px 28px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: var(--shadow);
+    textarea{min-height:110px;resize:vertical}
+    input:focus,textarea:focus,select:focus{border-color:#7aa7ff;box-shadow:0 0 0 4px rgba(122,167,255,.18)}
+    button{
+      border:1px solid var(--border2);background:#fff;padding:14px 14px;border-radius:14px;cursor:pointer;
+      font-weight:900;font-size:16px;min-height:48px
     }
-
-    /* Mobile-first Layout */
-    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .sep { height: 1px; background: #eef0f6; margin: 10px 0; }
-
-    label { display:block; font-size: 13px; color: #333; margin-bottom: 6px; font-weight: 600; }
-    input[type="text"], input[type="number"], textarea, select {
-      width: 100%; box-sizing: border-box;
-      padding: 14px 12px;               /* größer für Smartphone */
-      border: 1px solid var(--border2);
-      border-radius: 14px;
-      background: #fff;
-      font-size: 16px;                  /* wichtig: verhindert iOS Zoom */
-      outline: none;
+    button.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+    button.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .muted{color:var(--muted);font-size:13px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:13px}
+    .badge{font-size:12px;padding:5px 10px;background:#f2f5ff;border:1px solid #dbe5ff;border-radius:999px;font-weight:900}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:12px}
+    .warn{color:#8a5b00;font-weight:900}
+    .ok{color:#1a7f37;font-weight:900}
+    .entries{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+    .entry-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .small{font-size:14px;line-height:1.4}
+    .right{text-align:right}
+    .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .thumbs img{width:100%;height:110px;object-fit:cover;border-radius:14px;border:1px solid var(--border);background:#fafbff}
+    @media (min-width:860px){
+      header{padding:18px 16px}
+      .grid{grid-template-columns:repeat(12,1fr);gap:10px}
+      .col-12{grid-column:span 12}
+      .col-6{grid-column:span 6}
+      .col-4{grid-column:span 4}
+      .col-3{grid-column:span 3}
+      .entries{grid-template-columns:repeat(12,1fr)}
+      .entry{grid-column:span 6}
+      .thumbs{grid-template-columns:repeat(6,1fr)}
+      .thumbs img{height:78px}
     }
-    textarea { min-height: 110px; resize: vertical; }
-    input:focus, textarea:focus, select:focus {
-      border-color: #7aa7ff;
-      box-shadow: 0 0 0 4px rgba(122,167,255,0.18);
-    }
-
-    button {
-      border: 1px solid var(--border2);
-      background: #fff;
-      padding: 14px 14px;              /* größer */
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 800;
-      font-size: 16px;                  /* größer */
-      min-height: 48px;                 /* Daumenfreundlich */
-    }
-    button.primary { background: var(--primary); border-color: var(--primary); color: white; }
-    button.danger { background: var(--danger); border-color: var(--danger); color: white; }
-    button:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .muted { color: var(--muted); font-size: 13px; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 13px; }
-    .badge { font-size: 12px; padding: 5px 10px; background: #f2f5ff; border: 1px solid #dbe5ff; border-radius: 999px; font-weight: 700; }
-    .pill {
-      display:inline-flex; gap:8px; align-items:center;
-      padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border);
-      background: #fff; font-size: 12px;
-    }
-    .warn { color: #8a5b00; font-weight: 700; }
-    .ok { color: #1a7f37; font-weight: 700; }
-
-    .entries { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
-    .entry-head { display:flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-    .small { font-size: 14px; line-height: 1.4; }
-    .right { text-align:right; }
-
-    .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-    .thumbs img {
-      width: 100%; height: 110px;
-      object-fit: cover;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: #fafbff;
-    }
-
-    /* Tablet/Desktop: mehrspaltig */
-    @media (min-width: 860px) {
-      header { padding: 18px 16px; }
-      .grid { grid-template-columns: repeat(12, 1fr); gap: 10px; }
-      .col-12 { grid-column: span 12; }
-      .col-6  { grid-column: span 6; }
-      .col-4  { grid-column: span 4; }
-      .col-3  { grid-column: span 3; }
-      .entries { grid-template-columns: repeat(12, 1fr); }
-      .entry { grid-column: span 6; }
-      .thumbs { grid-template-columns: repeat(6, 1fr); }
-      .thumbs img { height: 78px; }
-    }
-
-    .footer-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content: space-between; align-items:center; }
+    .footer-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
   </style>
 </head>
+
 <body>
 <header>
-  <div class="row" style="justify-content: space-between;">
-    <h1>Begehungsprotokoll</h1>
+  <div class="row" style="justify-content:space-between;">
+    <h1>ProtokollApp</h1>
     <span class="pill" id="libStatus">Bibliotheken: <span class="warn">lade…</span></span>
   </div>
 </header>
@@ -123,8 +73,8 @@
   <div class="card">
     <div class="grid">
       <div class="col-12">
-        <div class="row" style="justify-content: space-between;">
-          <div class="muted">Punkte jederzeit speichern. Standort/Wetter/Temp/Strecke/km optional.</div>
+        <div class="row" style="justify-content:space-between;">
+          <div class="muted">Protokoll</div>
           <div class="right">
             <div class="muted">Datum/Uhrzeit</div>
             <div class="mono" id="nowText"></div>
@@ -134,28 +84,33 @@
 
       <div class="col-12 sep"></div>
 
-      <!-- Kopf-Daten (optional) -->
       <div class="col-6">
-        <label for="site">Standort (optional)</label>
+        <label for="project">Projekt</label>
+        <input id="project" type="text" placeholder="z. B. Streckenbegehung Hanau – Abschnitt Süd" />
+      </div>
+      <div class="col-6">
+        <label for="creator">Ersteller</label>
+        <input id="creator" type="text" placeholder="z. B. Max Mustermann" />
+      </div>
+
+      <div class="col-12 sep"></div>
+
+      <div class="col-6">
+        <label for="site">Standort</label>
         <input id="site" type="text" placeholder="z. B. Baustelle / Ort / Koordinaten" />
         <div class="row" style="margin-top:10px;">
           <button id="btnGeo" type="button">📍 Standort automatisch</button>
-          <span class="muted">meist nur über HTTPS</span>
+          <span class="muted"></span>
         </div>
       </div>
 
       <div class="col-3">
-        <label for="trackNo">Streckennummer (optional)</label>
+        <label for="trackNo">Streckennummer</label>
         <input id="trackNo" type="text" inputmode="numeric" placeholder="z. B. 3610" />
       </div>
 
       <div class="col-3">
-        <label for="km">km (optional)</label>
-        <input id="km" type="text" inputmode="decimal" placeholder="z. B. 12,345" />
-      </div>
-
-      <div class="col-3">
-        <label for="weather">Wetter (optional)</label>
+        <label for="weather">Wetter</label>
         <select id="weather">
           <option value="">(leer)</option>
           <option>Sonnig</option>
@@ -175,18 +130,17 @@
       </div>
 
       <div class="col-3">
-        <label for="temp">Temperatur °C (optional)</label>
+        <label for="temp">Temperatur °C</label>
         <input id="temp" type="number" step="0.1" placeholder="z. B. 8.5" />
       </div>
 
       <div class="col-12 sep"></div>
 
-      <!-- Punkt -->
       <div class="col-12">
-        <div class="row" style="justify-content: space-between;">
+        <div class="row" style="justify-content:space-between;">
           <div>
             <strong style="font-size:16px;">Punkt hinzufügen</strong>
-            <div class="muted">Pflicht ist nur „Mangel/Feststellung“.</div>
+            <div class="muted"></div>
           </div>
           <div class="row">
             <span class="badge" id="countBadge">0 Punkte</span>
@@ -195,33 +149,35 @@
         </div>
       </div>
 
+      <div class="col-3">
+        <label for="kmPoint">km</label>
+        <input id="kmPoint" type="text" inputmode="decimal" placeholder="z. B. 12,345" />
+      </div>
+
       <div class="col-12">
-        <label for="note">Mangel / Feststellung (Pflicht)</label>
+        <label for="note">Mangel / Feststellung</label>
         <textarea id="note" placeholder="Beschreibe den Punkt …"></textarea>
       </div>
 
       <div class="col-12">
-        <label for="photos">Fotos (optional)</label>
+        <label for="photos">Fotos</label>
         <input id="photos" type="file" accept="image/*" multiple capture="environment" />
-        <div class="muted">Tipp: Auf dem Handy öffnet sich oft direkt die Kamera.</div>
       </div>
 
       <div class="col-12">
-        <div class="row" style="justify-content: flex-end;">
+        <div class="row" style="justify-content:flex-end;">
           <button id="btnAdd" class="primary" type="button">➕ Punkt speichern</button>
         </div>
       </div>
 
       <div class="col-12 sep"></div>
 
-      <!-- Export -->
       <div class="col-12 footer-actions">
         <div class="row">
           <button id="btnExportXlsx" type="button" disabled>⬇️ Excel</button>
           <button id="btnExportPdf" type="button" disabled>⬇️ PDF</button>
-          <button id="btnExportZip" type="button" disabled>⬇️ ZIP (Excel+Fotos)</button>
+          <button id="btnExportZip" type="button" disabled>⬇️ ZIP</button>
         </div>
-        <div class="muted">In PDF/Excel stehen auch Streckennummer & km.</div>
       </div>
     </div>
   </div>
@@ -229,7 +185,6 @@
   <div class="entries" id="entries"></div>
 </main>
 
-<!-- Bibliotheken (CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -239,11 +194,13 @@
   const state = { entries: [] };
   const $ = (id) => document.getElementById(id);
 
+  const projectEl = $("project");
+  const creatorEl = $("creator");
   const siteEl = $("site");
   const trackNoEl = $("trackNo");
-  const kmEl = $("km");
   const weatherEl = $("weather");
   const tempEl = $("temp");
+  const kmPointEl = $("kmPoint");
   const noteEl = $("note");
   const photosEl = $("photos");
   const entriesEl = $("entries");
@@ -260,121 +217,90 @@
   const libStatus = $("libStatus");
   const nowText = $("nowText");
 
-  function nowISO() { return new Date().toISOString(); }
-  function formatLocal(dtISO) {
-    const d = new Date(dtISO);
-    return d.toLocaleString("de-DE", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+  function nowISO(){ return new Date().toISOString(); }
+  function formatLocal(iso){
+    const d = new Date(iso);
+    return d.toLocaleString("de-DE",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
   }
-  function uniqId() { return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
-  function safeFileName(s) { return (s || "").replace(/[\\/:*?"<>|]+/g, "_").trim().slice(0, 120) || "datei"; }
+  function formatDateDE(d){
+    const dd = String(d.getDate()).padStart(2,"0");
+    const mm = String(d.getMonth()+1).padStart(2,"0");
+    const yyyy = String(d.getFullYear());
+    return `${dd}.${mm}.${yyyy}`;
+  }
+  function uniqId(){ return Math.random().toString(16).slice(2)+"-"+Date.now().toString(16); }
+  function safeFileName(s){ return (s||"").replace(/[\\/:*?"<>|]+/g,"_").trim().slice(0,120)||"datei"; }
 
-  function setNowTicker() { nowText.textContent = new Date().toLocaleString("de-DE"); }
-  setNowTicker(); setInterval(setNowTicker, 1000);
+  function setNowTicker(){ nowText.textContent = new Date().toLocaleString("de-DE"); }
+  setNowTicker(); setInterval(setNowTicker,1000);
 
-  function updateLibStatus() {
-    const okXlsx = !!window.XLSX;
-    const okZip  = !!window.JSZip;
-    const okPdf  = !!(window.jspdf && window.jspdf.jsPDF);
+  function updateLibStatus(){
+    const okXlsx=!!window.XLSX, okZip=!!window.JSZip, okPdf=!!(window.jspdf && window.jspdf.jsPDF);
     const span = libStatus.querySelector("span:last-child");
-    if (okXlsx && okZip && okPdf) { span.textContent = "bereit"; span.className = "ok"; }
-    else {
-      const missing = [];
-      if (!okXlsx) missing.push("XLSX");
-      if (!okZip) missing.push("ZIP");
-      if (!okPdf) missing.push("PDF");
-      span.textContent = "fehlt: " + missing.join(", ");
-      span.className = "warn";
+    if(okXlsx && okZip && okPdf){ span.textContent="bereit"; span.className="ok"; }
+    else{
+      const m=[]; if(!okXlsx)m.push("XLSX"); if(!okZip)m.push("ZIP"); if(!okPdf)m.push("PDF");
+      span.textContent="fehlt: "+m.join(", "); span.className="warn";
     }
   }
-
-  function updateButtons() {
-    const has = state.entries.length > 0;
-    btnClearAll.disabled = !has;
-
-    const okXlsx = !!window.XLSX;
-    const okZip  = !!window.JSZip;
-    const okPdf  = !!(window.jspdf && window.jspdf.jsPDF);
-
-    btnExportXlsx.disabled = !has || !okXlsx;
-    btnExportZip.disabled  = !has || !okXlsx || !okZip;
-    btnExportPdf.disabled  = !has || !okPdf;
-
-    countBadge.textContent = `${state.entries.length} Punkt${state.entries.length === 1 ? "" : "e"}`;
+  function updateButtons(){
+    const has=state.entries.length>0;
+    btnClearAll.disabled=!has;
+    const okXlsx=!!window.XLSX, okZip=!!window.JSZip, okPdf=!!(window.jspdf && window.jspdf.jsPDF);
+    btnExportXlsx.disabled=!has || !okXlsx;
+    btnExportZip.disabled=!has || !okXlsx || !okZip;
+    btnExportPdf.disabled=!has || !okPdf;
+    countBadge.textContent = `${state.entries.length} Punkt${state.entries.length===1?"":"e"}`;
   }
 
-  function validateEntry() {
-    const note = noteEl.value.trim();
-    if (!note) return { ok:false, msg:"Bitte Mangel/Feststellung eingeben." };
-    return { ok:true };
-  }
-
-  function readFilesAsDataUrls(fileList) {
-    const files = Array.from(fileList || []);
-    return Promise.all(files.map(f => new Promise((resolve, reject) => {
-      const r = new FileReader();
-      r.onload = () => resolve({ name: f.name, type: f.type || "application/octet-stream", dataUrl: r.result });
-      r.onerror = reject;
+  function readFilesAsDataUrls(fileList){
+    const files=Array.from(fileList||[]);
+    return Promise.all(files.map(f => new Promise((resolve,reject)=>{
+      const r=new FileReader();
+      r.onload=()=>resolve({name:f.name,type:f.type||"application/octet-stream",dataUrl:r.result});
+      r.onerror=reject;
       r.readAsDataURL(f);
     })));
   }
 
-  function escapeHtml(s) {
-    return String(s || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+  function renderEntries(){
+    entriesEl.innerHTML="";
+    for(const e of [...state.entries].reverse()){
+      const div=document.createElement("div");
+      div.className="card entry";
 
-  function renderEntries() {
-    entriesEl.innerHTML = "";
-    if (!state.entries.length) return;
+      const head=document.createElement("div");
+      head.className="entry-head";
 
-    for (const e of [...state.entries].reverse()) {
-      const div = document.createElement("div");
-      div.className = "card entry";
-
-      const head = document.createElement("div");
-      head.className = "entry-head";
-
-      const metaLine = [
-        e.trackNo ? `Strecke ${e.trackNo}` : null,
-        e.km ? `km ${e.km}` : null
-      ].filter(Boolean).join(" · ");
-
-      const w = e.weather || "—";
-      const t = e.temp ? `${e.temp}°C` : "—";
+      const meta=[ e.trackNo?`Strecke ${e.trackNo}`:null, e.km?`km ${e.km}`:null ].filter(Boolean).join(" · ");
+      const w = e.weatherHeader || "—";
+      const t = e.tempHeader ? `${e.tempHeader}°C` : "—";
       const s = e.site || "—";
 
-      const left = document.createElement("div");
+      const left=document.createElement("div");
       left.innerHTML = `
-        <div class="small">
-          <strong>${formatLocal(e.tsISO)}</strong>
-          <span class="badge">${w} · ${t}</span>
-        </div>
-        <div class="muted">${escapeHtml(s)}</div>
-        ${metaLine ? `<div class="muted"><strong>${escapeHtml(metaLine)}</strong></div>` : ``}
+        <div class="small"><strong>${formatLocal(e.tsISO)}</strong> <span class="badge">${w} · ${t}</span></div>
+        <div class="muted">${(s||"—").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")}</div>
+        ${meta ? `<div class="muted"><strong>${meta}</strong></div>`:""}
         <div class="sep" style="margin:10px 0;"></div>
-        <div class="small">${escapeHtml(e.note).replace(/\n/g,"<br>")}</div>
+        <div class="small">${(e.note||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replace(/\n/g,"<br>")}</div>
       `;
 
-      const right = document.createElement("div");
-      right.className = "right";
+      const right=document.createElement("div");
+      right.className="right";
 
-      const info = document.createElement("div");
-      info.className = "muted";
-      info.style.marginBottom = "8px";
-      info.textContent = `${e.photos.length} Foto${e.photos.length === 1 ? "" : "s"}`;
+      const info=document.createElement("div");
+      info.className="muted";
+      info.style.marginBottom="8px";
+      info.textContent = `${e.photos.length} Foto${e.photos.length===1?"":"s"}`;
 
-      const delBtn = document.createElement("button");
-      delBtn.type = "button";
-      delBtn.className = "danger";
-      delBtn.textContent = "🗑️ Löschen";
-      delBtn.onclick = () => {
-        state.entries = state.entries.filter(x => x.id !== e.id);
-        renderEntries();
-        updateButtons();
+      const delBtn=document.createElement("button");
+      delBtn.type="button";
+      delBtn.className="danger";
+      delBtn.textContent="🗑️ Löschen";
+      delBtn.onclick=()=>{
+        state.entries = state.entries.filter(x=>x.id!==e.id);
+        renderEntries(); updateButtons();
       };
 
       right.appendChild(info);
@@ -384,405 +310,412 @@
       head.appendChild(right);
       div.appendChild(head);
 
-      if (e.photos.length) {
-        const thumbs = document.createElement("div");
-        thumbs.className = "thumbs";
-        for (const p of e.photos.slice(0, 12)) {
-          const img = document.createElement("img");
-          img.src = p.dataUrl;
-          img.alt = p.name;
-          img.title = p.name;
+      if(e.photos.length){
+        const thumbs=document.createElement("div");
+        thumbs.className="thumbs";
+        for(const p of e.photos.slice(0,12)){
+          const img=document.createElement("img");
+          img.src=p.dataUrl; img.alt=p.name; img.title=p.name;
           thumbs.appendChild(img);
         }
         div.appendChild(thumbs);
       }
-
       entriesEl.appendChild(div);
     }
   }
 
-  // Speichern
-  btnAdd.addEventListener("click", async () => {
-    const v = validateEntry();
-    if (!v.ok) { alert(v.msg); return; }
+  btnAdd.addEventListener("click", async ()=>{
+    const note = noteEl.value.trim();
+    if(!note){ alert("Bitte Mangel/Feststellung eingeben."); return; }
 
-    btnAdd.disabled = true;
-    btnAdd.textContent = "speichere…";
-
-    try {
+    btnAdd.disabled=true; btnAdd.textContent="speichere…";
+    try{
       const photos = await readFilesAsDataUrls(photosEl.files);
-
       state.entries.push({
         id: uniqId(),
         tsISO: nowISO(),
         site: siteEl.value.trim(),
         trackNo: trackNoEl.value.trim(),
-        km: kmEl.value.trim(),
-        weather: weatherEl.value.trim(),
-        temp: tempEl.value.toString().trim(),
-        note: noteEl.value.trim(),
-        photos
+        km: kmPointEl.value.trim(),
+        note,
+        photos,
+        weatherHeader: weatherEl.value.trim(),
+        tempHeader: tempEl.value.toString().trim()
       });
 
-      noteEl.value = "";
-      photosEl.value = "";
+      kmPointEl.value="";
+      noteEl.value="";
+      photosEl.value="";
       noteEl.focus();
 
-      renderEntries();
-      updateButtons();
-    } catch (e) {
+      renderEntries(); updateButtons();
+    }catch(e){
       console.error(e);
       alert("Fehler beim Lesen der Fotos.");
-    } finally {
-      btnAdd.disabled = false;
-      btnAdd.textContent = "➕ Punkt speichern";
+    }finally{
+      btnAdd.disabled=false; btnAdd.textContent="➕ Punkt speichern";
     }
   });
 
-  btnClearAll.addEventListener("click", () => {
-    if (!confirm("Wirklich alle Punkte löschen?")) return;
-    state.entries = [];
-    renderEntries();
-    updateButtons();
+  btnClearAll.addEventListener("click", ()=>{
+    if(!confirm("Wirklich alle Punkte löschen?")) return;
+    state.entries=[]; renderEntries(); updateButtons();
   });
 
-  // Export-Namen
-  function buildBaseName() {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,"0");
-    const da = String(d.getDate()).padStart(2,"0");
-    const site = safeFileName(siteEl.value.trim()).slice(0, 28);
-    const tr = safeFileName(trackNoEl.value.trim()).slice(0, 12);
-    return `Begehungsprotokoll_${y}-${m}-${da}${tr ? "_Strecke-" + tr : ""}${site ? "_" + site : ""}`;
-  }
-  function formatForFile(iso) {
-    const d = new Date(iso);
-    const y = d.getFullYear();
-    const m = String(d.getMonth()+1).padStart(2,"0");
-    const da = String(d.getDate()).padStart(2,"0");
-    const hh = String(d.getHours()).padStart(2,"0");
-    const mm = String(d.getMinutes()).padStart(2,"0");
-    const ss = String(d.getSeconds()).padStart(2,"0");
-    return `${y}${m}${da}_${hh}${mm}${ss}`;
+  function buildBaseName(){
+    const d=new Date();
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const da=String(d.getDate()).padStart(2,"0");
+    const proj=safeFileName(projectEl.value.trim()).slice(0,28);
+    return `Begehungsprotokoll_${y}-${m}-${da}${proj?("_"+proj):""}`;
   }
 
-  // Excel
-  function buildWorkbook() {
-    const rows = state.entries.map(e => ({
+  function buildWorkbook(){
+    const rows = state.entries.map((e,i)=>({
+      "Nr.": i+1,
       "Datum/Uhrzeit": formatLocal(e.tsISO),
+      "Projekt": projectEl.value.trim() || "",
+      "Ersteller": creatorEl.value.trim() || "",
       "Standort": e.site || "",
       "Streckennummer": e.trackNo || "",
       "km": e.km || "",
-      "Wetter": e.weather || "",
-      "Temperatur (°C)": e.temp || "",
+      "Wetter": weatherEl.value.trim() || "",
+      "Temperatur (°C)": tempEl.value.toString().trim() || "",
       "Mangel/Feststellung": e.note,
       "Foto-Anzahl": e.photos.length,
-      "Foto-Dateinamen": e.photos.map(p => p.name).join("; ")
+      "Foto-Dateinamen": e.photos.map(p=>p.name).join("; ")
     }));
-
-    const ws = XLSX.utils.json_to_sheet(rows, { skipHeader: false });
-    ws["!cols"] = [
-      { wch: 18 }, { wch: 30 }, { wch: 14 }, { wch: 10 }, { wch: 14 }, { wch: 16 }, { wch: 60 }, { wch: 10 }, { wch: 40 }
-    ];
-
+    const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Protokoll");
     return wb;
   }
 
-  btnExportXlsx.addEventListener("click", () => {
-    try {
-      const wb = buildWorkbook();
-      XLSX.writeFile(wb, buildBaseName() + ".xlsx");
-    } catch (e) {
-      console.error(e);
-      alert("Excel-Export fehlgeschlagen.");
-    }
+  btnExportXlsx.addEventListener("click", ()=>{
+    try{ XLSX.writeFile(buildWorkbook(), buildBaseName()+".xlsx"); }
+    catch(e){ console.error(e); alert("Excel-Export fehlgeschlagen."); }
   });
 
-  // ZIP + Fotos
-  function guessExt(p) {
-    const m = String(p.dataUrl || "").match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,/);
-    const mime = m ? m[1] : (p.type || "");
-    if (mime.includes("png")) return "png";
-    if (mime.includes("webp")) return "webp";
-    if (mime.includes("gif")) return "gif";
+  function guessExt(p){
+    const m = String(p.dataUrl||"").match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,/);
+    const mime = m ? m[1] : (p.type||"");
+    if(mime.includes("png")) return "png";
+    if(mime.includes("webp")) return "webp";
+    if(mime.includes("gif")) return "gif";
     return "jpg";
   }
-  function dataUrlToUint8(dataUrl) {
-    const base64 = dataUrl.split(",")[1] || "";
-    const bin = atob(base64);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  function dataUrlToUint8(dataUrl){
+    const base64=dataUrl.split(",")[1]||"";
+    const bin=atob(base64);
+    const bytes=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
     return bytes;
   }
-  function downloadBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
+  function downloadBlob(blob, filename){
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url; a.download=filename;
     document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
 
-  btnExportZip.addEventListener("click", async () => {
-    try {
-      const wb = buildWorkbook();
-      const zip = new JSZip();
-      const base = buildBaseName();
+  btnExportZip.addEventListener("click", async ()=>{
+    try{
+      const zip=new JSZip();
+      const base=buildBaseName();
+      const xlsxArray = XLSX.write(buildWorkbook(), { bookType:"xlsx", type:"array" });
+      zip.file(base+".xlsx", xlsxArray);
 
-      // Excel in ZIP
-      const xlsxArray = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-      zip.file(base + ".xlsx", xlsxArray);
-
-      const imgFolder = zip.folder(base + "_Fotos");
-      for (const e of state.entries) {
-        for (let i = 0; i < e.photos.length; i++) {
-          const p = e.photos[i];
-          const ext = guessExt(p);
-          const idPart = `${e.trackNo ? "S" + safeFileName(e.trackNo) : "S-" }_${e.km ? "KM" + safeFileName(e.km) : "KM-"}`
-          const fileName = `${idPart}_${formatForFile(e.tsISO)}_${String(i+1).padStart(2,"0")}.${ext}`;
-          imgFolder.file(fileName, dataUrlToUint8(p.dataUrl));
+      const imgFolder = zip.folder(base+"_Fotos");
+      for(const e of state.entries){
+        for(let i=0;i<e.photos.length;i++){
+          const p=e.photos[i];
+          const ext=guessExt(p);
+          imgFolder.file(`Punkt_${formatDateDE(new Date(e.tsISO))}_${String(i+1).padStart(2,"0")}.${ext}`, dataUrlToUint8(p.dataUrl));
         }
       }
-
-      const blob = await zip.generateAsync({ type: "blob" });
-      downloadBlob(blob, base + ".zip");
-    } catch (e) {
-      console.error(e);
-      alert("ZIP-Export fehlgeschlagen.");
-    }
+      const blob=await zip.generateAsync({type:"blob"});
+      downloadBlob(blob, base+".zip");
+    }catch(e){ console.error(e); alert("ZIP-Export fehlgeschlagen."); }
   });
 
-  // PDF
-  btnExportPdf.addEventListener("click", async () => {
-    try {
-      btnExportPdf.disabled = true;
-      btnExportPdf.textContent = "erstelle…";
-      await exportPdf();
-    } catch (e) {
+  // ===== PDF (FIXED) =====
+  function fitRect(w,h,maxW,maxH){
+    const r=Math.min(maxW/w, maxH/h);
+    return { w:w*r, h:h*r };
+  }
+  function loadImage(src){
+    return new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.onload=()=>resolve(img);
+      img.onerror=reject;
+      img.src=src;
+    });
+  }
+  function getImageDims(dataUrl){
+    return new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.onload=()=>resolve({w:img.naturalWidth||img.width, h:img.naturalHeight||img.height});
+      img.onerror=reject;
+      img.src=dataUrl;
+    });
+  }
+  async function ensureJpegOrPng(dataUrl){
+    if(dataUrl.startsWith("data:image/jpeg") || dataUrl.startsWith("data:image/png")) return dataUrl;
+    const img=await loadImage(dataUrl);
+    const c=document.createElement("canvas");
+    c.width=img.naturalWidth||img.width;
+    c.height=img.naturalHeight||img.height;
+    const ctx=c.getContext("2d");
+    ctx.fillStyle="#ffffff";
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0);
+    return c.toDataURL("image/jpeg",0.92);
+  }
+
+  btnExportPdf.addEventListener("click", async ()=>{
+    try{
+      btnExportPdf.disabled=true;
+      btnExportPdf.textContent="erstelle…";
+      await exportPdfProfessional();
+    }catch(e){
       console.error(e);
-      alert("PDF-Export fehlgeschlagen.");
-    } finally {
-      btnExportPdf.textContent = "⬇️ PDF";
+      alert("PDF-Export fehlgeschlagen. (Konsole/F12 zeigt Details)");
+    }finally{
+      btnExportPdf.textContent="⬇️ PDF";
       updateButtons();
     }
   });
 
-  function shorten(s, max) {
-    s = String(s || "");
-    return s.length > max ? s.slice(0, max-1) + "…" : s;
-  }
-  function fitRect(w, h, maxW, maxH) {
-    const r = Math.min(maxW / w, maxH / h);
-    return { w: w * r, h: h * r };
-  }
-  function loadImage(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(img);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-  function getImageDims(dataUrl) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve({ w: img.naturalWidth || img.width, h: img.naturalHeight || img.height });
-      img.onerror = reject;
-      img.src = dataUrl;
-    });
-  }
-  async function ensureJpegOrPng(dataUrl) {
-    if (dataUrl.startsWith("data:image/jpeg") || dataUrl.startsWith("data:image/png")) return dataUrl;
-    const img = await loadImage(dataUrl);
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth || img.width;
-    canvas.height = img.naturalHeight || img.height;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0);
-    return canvas.toDataURL("image/jpeg", 0.92);
-  }
-
-  async function exportPdf() {
+  async function exportPdfProfessional(){
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    const doc = new jsPDF({ unit:"mm", format:"a4" });
 
-    const pageW = doc.internal.pageSize.getWidth();
-    const pageH = doc.internal.pageSize.getHeight();
-    const margin = 12;
-    let y = margin;
+    const margin=10;
+    const project = projectEl.value.trim() || "—";
+    const creator = creatorEl.value.trim() || "—";
+    const createdDate = formatDateDE(new Date());
 
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text("Begehungsprotokoll", margin, y);
-    y += 7;
+    // Titel
+    doc.setFont("helvetica","bold"); doc.setFontSize(14);
+    doc.text("Begehungsprotokoll", margin, 14);
 
-    doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text(`Erstellt: ${new Date().toLocaleString("de-DE")}`, margin, y);
-    y += 6;
+    doc.setFont("helvetica","bold");
+    doc.text(`Projekt: ${project}`, margin, 20);
 
-    const headRows = [
+    doc.setFont("helvetica","normal");
+    doc.text(`Ersteller: ${creator}`, margin, 25);
+    doc.text(`Erstellt am: ${createdDate}`, margin, 30);
+
+    // Wetter/Temp nur oben
+    const headerRows = [
       ["Standort", siteEl.value.trim() || "—"],
       ["Streckennummer", trackNoEl.value.trim() || "—"],
-      ["km", kmEl.value.trim() || "—"],
       ["Wetter", weatherEl.value.trim() || "—"],
       ["Temperatur (°C)", tempEl.value.toString().trim() || "—"]
     ];
 
     doc.autoTable({
-      startY: y,
-      head: [["Feld", "Wert"]],
-      body: headRows,
+      startY: 34,
+      body: headerRows,
       theme: "grid",
-      styles: { fontSize: 10, cellPadding: 2 },
-      headStyles: { fillColor: [240,240,240] },
+      styles: { fontSize: 9, cellPadding: 2 },
       margin: { left: margin, right: margin }
     });
 
-    y = doc.lastAutoTable.finalY + 8;
+    const startY = doc.lastAutoTable.finalY + 6;
 
-    for (let idx = 0; idx < state.entries.length; idx++) {
-      const e = state.entries[idx];
-      if (y > pageH - 30) { doc.addPage(); y = margin; }
+    // A4 nutzbar: 190mm (bei 10mm Rand) -> Summe MUSS <= 190!
+    const colW = { nr: 8, date: 20, km: 14, text: 78, photo: 70 }; // Summe = 190 ✅
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(12);
-      doc.text(`Punkt ${idx + 1}`, margin, y);
-      y += 6;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-
-      doc.text(`Datum/Uhrzeit: ${formatLocal(e.tsISO)}`, margin, y); y += 5;
-      doc.text(`Standort: ${shorten(e.site || "—", 120)}`, margin, y); y += 5;
-      doc.text(`Strecke/km: ${(e.trackNo || "—")} / ${(e.km || "—")}`, margin, y); y += 5;
-      doc.text(`Wetter/Temp: ${(e.weather || "—")} / ${(e.temp || "—")} °C`, margin, y); y += 6;
-
-      const noteLines = doc.splitTextToSize(e.note, pageW - margin*2);
-      doc.text(noteLines, margin, y);
-      y += (noteLines.length * 4.6) + 4;
-
-      if (e.photos.length) {
-        const cols = 2;
-        const gap = 4;
-        const boxW = (pageW - margin*2 - gap*(cols-1)) / cols;
-        const boxH = 62;
-
-        let col = 0;
-        for (let i = 0; i < e.photos.length; i++) {
-          if (y + boxH > pageH - margin) { doc.addPage(); y = margin; }
-
-          const x = margin + col * (boxW + gap);
-          const p = e.photos[i];
-
-          const imgUrl = await ensureJpegOrPng(p.dataUrl);
-          const fmt = imgUrl.startsWith("data:image/png") ? "PNG" : "JPEG";
-          const dims = await getImageDims(imgUrl);
-          const fitted = fitRect(dims.w, dims.h, boxW, boxH);
-
-          doc.setDrawColor(220);
-          doc.rect(x, y, boxW, boxH);
-
-          const ix = x + (boxW - fitted.w) / 2;
-          const iy = y + (boxH - fitted.h) / 2;
-          doc.addImage(imgUrl, fmt, ix, iy, fitted.w, fitted.h);
-
-          col++;
-          if (col >= cols) { col = 0; y += boxH + gap; }
-        }
-        if (col !== 0) y += boxH + gap;
-      }
-
-      y += 6;
-      doc.setDrawColor(235);
-      doc.line(margin, y, pageW - margin, y);
-      y += 8;
+    const photoCache = new Map();
+    async function prepPhoto(p){
+      if(!p?.dataUrl) return null;
+      if(photoCache.has(p.dataUrl)) return photoCache.get(p.dataUrl);
+      const url = await ensureJpegOrPng(p.dataUrl);
+      const fmt = url.startsWith("data:image/png") ? "PNG" : "JPEG";
+      const dims = await getImageDims(url);
+      const obj = { url, fmt, w: dims.w, h: dims.h };
+      photoCache.set(p.dataUrl, obj);
+      return obj;
     }
 
-    doc.save(buildBaseName() + ".pdf");
+    const maxRowH = 120; // große Fotos, aber stabil für A4
+    const minRowH = 42;
+
+    const rows = [];
+    for(let i=0;i<state.entries.length;i++){
+      const e=state.entries[i];
+
+      const meta = [
+        e.site ? `Standort: ${e.site}` : null,
+        e.trackNo ? `Strecke: ${e.trackNo}` : null,
+        e.km ? `km: ${e.km}` : null
+      ].filter(Boolean).join("\n");
+
+      const textBlock = (meta ? meta + "\n\n" : "") + e.note;
+
+      const p1 = e.photos[0] ? await prepPhoto(e.photos[0]) : null; // 1–2 Bilder groß
+      const p2 = e.photos[1] ? await prepPhoto(e.photos[1]) : null;
+
+      // Zeilenhöhe anhand Foto(s) berechnen (maximale Darstellung in Spalte)
+      let rowH = minRowH;
+      const usableW = colW.photo - 4;
+      if(p1 && !p2){
+        rowH = Math.min(maxRowH, Math.max(minRowH, usableW * (p1.h / p1.w) + 6));
+      } else if(p1 && p2){
+        const h1 = usableW * (p1.h / p1.w);
+        const h2 = usableW * (p2.h / p2.w);
+        rowH = Math.min(maxRowH, Math.max(minRowH, h1 + h2 + 8));
+      }
+
+      rows.push({
+        nr: String(i+1),
+        date: formatDateDE(new Date(e.tsISO)),
+        km: e.km || "—",
+        text: textBlock.trim(),
+        photos: [p1,p2].filter(Boolean),
+        photoCount: e.photos.length,
+        rowH
+      });
+    }
+
+    doc.autoTable({
+      startY,
+      theme:"grid",
+      margin:{ left: margin, right: margin },
+      head:[[ "Nr.", "Datum", "km", "Mangel / Feststellung", "Fotos" ]],
+      body: rows.map(r => [r.nr, r.date, r.km, r.text, ""]),
+      styles:{ fontSize:9, cellPadding:2, valign:"top" },
+      headStyles:{ fillColor:[240,240,240], fontStyle:"bold" },
+      columnStyles:{
+        0:{ cellWidth: colW.nr },
+        1:{ cellWidth: colW.date },
+        2:{ cellWidth: colW.km },
+        3:{ cellWidth: colW.text },
+        4:{ cellWidth: colW.photo }
+      },
+      didParseCell:(data)=>{
+        if(data.section!=="body") return;
+        const r = rows[data.row.index];
+        data.cell.styles.minCellHeight = r.rowH;
+      },
+      didDrawCell:(data)=>{
+        if(data.section!=="body") return;
+        if(data.column.index!==4) return;
+
+        const r = rows[data.row.index];
+        const cell = data.cell;
+
+        const pad=1.5;
+        const x=cell.x+pad, y=cell.y+pad;
+        const w=cell.width-pad*2, h=cell.height-pad*2;
+
+        if(!r.photos.length){
+          doc.setFont("helvetica","normal"); doc.setFontSize(9);
+          doc.text("—", cell.x+cell.width/2, cell.y+8, {align:"center"});
+          return;
+        }
+
+        const gap=2.2;
+        const slots = r.photos.length>=2 ? 2 : 1;
+        const slotH = slots===2 ? (h-gap)/2 : h;
+
+        for(let i=0;i<Math.min(2,r.photos.length);i++){
+          const ph=r.photos[i];
+          const boxY=y + i*(slotH+gap);
+          const fitted = fitRect(ph.w, ph.h, w, slotH);
+          const ix=x + (w-fitted.w)/2;
+          const iy=boxY + (slotH-fitted.h)/2;
+          try{ doc.addImage(ph.url, ph.fmt, ix, iy, fitted.w, fitted.h); }catch(e){}
+        }
+
+        if(r.photoCount>2){
+          doc.setFont("helvetica","bold"); doc.setFontSize(10);
+          doc.text(`+${r.photoCount-2}`, cell.x+cell.width-2, cell.y+cell.height-2, {align:"right"});
+        }
+      }
+    });
+
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for(let p=1;p<=pageCount;p++){
+      doc.setPage(p);
+      doc.setFont("helvetica","normal"); doc.setFontSize(9);
+      doc.text(`Projekt: ${safeFileName(project).slice(0,45)}  |  Ersteller: ${safeFileName(creator).slice(0,35)}`, margin, 292);
+      doc.text(`Seite ${p} / ${pageCount}`, 210-margin, 292, {align:"right"});
+    }
+
+    doc.save(buildBaseName()+".pdf");
   }
 
-  // Standort (optional)
-  btnGeo.addEventListener("click", () => {
-    if (!navigator.geolocation) { alert("Geolocation wird von diesem Browser nicht unterstützt."); return; }
-    btnGeo.disabled = true; btnGeo.textContent = "ermittle…";
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
-        try {
-          const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-          const res = await fetch(url, { headers: { "Accept": "application/json" } });
-          const data = await res.json();
-          siteEl.value = data.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-        } catch {
-          siteEl.value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
-        } finally {
-          btnGeo.disabled = false; btnGeo.textContent = "📍 Standort automatisch";
-        }
-      },
-      () => {
-        alert("Standort nicht verfügbar (Berechtigung/HTTPS). Du kannst ihn manuell eintragen.");
-        btnGeo.disabled = false; btnGeo.textContent = "📍 Standort automatisch";
-      },
-      { enableHighAccuracy: true, timeout: 8000 }
-    );
-  });
-
-  // Wetter (optional, nutzt GPS)
-  btnWeather.addEventListener("click", () => {
-    if (!navigator.geolocation) { alert("Geolocation wird von diesem Browser nicht unterstützt."); return; }
-    btnWeather.disabled = true; btnWeather.textContent = "hole…";
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      try {
-        const { latitude, longitude } = pos.coords;
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=auto`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data && data.current) {
-          const t = data.current.temperature_2m;
-          if (typeof t === "number") tempEl.value = t.toFixed(1);
-          const w = mapWmoToText(data.current.weather_code);
-          const options = Array.from(weatherEl.options).map(o => o.value);
-          weatherEl.value = options.includes(w) ? w : "";
-        } else {
-          alert("Wetterdaten nicht verfügbar.");
-        }
-      } catch {
-        alert("Wetter konnte nicht geholt werden (Internet?).");
-      } finally {
-        btnWeather.disabled = false; btnWeather.textContent = "🌦️ Wetter holen";
+  // Standort
+  btnGeo.addEventListener("click", ()=>{
+    if(!navigator.geolocation){ alert("Geolocation wird nicht unterstützt."); return; }
+    btnGeo.disabled=true; btnGeo.textContent="ermittle…";
+    navigator.geolocation.getCurrentPosition(async (pos)=>{
+      const {latitude,longitude}=pos.coords;
+      try{
+        const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+        const res=await fetch(url,{headers:{Accept:"application/json"}});
+        const data=await res.json();
+        siteEl.value = data.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+      }catch{
+        siteEl.value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+      }finally{
+        btnGeo.disabled=false; btnGeo.textContent="📍 Standort automatisch";
       }
-    }, () => {
-      alert("GPS-Berechtigung nötig (oder Wetter/Temp manuell eintragen).");
-      btnWeather.disabled = false; btnWeather.textContent = "🌦️ Wetter holen";
-    }, { enableHighAccuracy: true, timeout: 8000 });
+    }, ()=>{
+      alert("Standort nicht verfügbar (Berechtigung/HTTPS).");
+      btnGeo.disabled=false; btnGeo.textContent="📍 Standort automatisch";
+    }, {enableHighAccuracy:true, timeout:8000});
   });
 
-  function mapWmoToText(code) {
-    if (code === 0) return "Sonnig";
-    if ([1,2].includes(code)) return "Leicht bewölkt";
-    if (code === 3) return "Bewölkt";
-    if ([45,48].includes(code)) return "Nebel";
-    if ([51,53,55].includes(code)) return "Nieselregen";
-    if ([61,63,65,80,81,82].includes(code)) return "Regen";
-    if ([66,67].includes(code)) return "Starkregen";
-    if ([71,73,75,77,85,86].includes(code)) return "Schnee";
-    if ([95,96,99].includes(code)) return "Gewitter";
+  // Wetter
+  btnWeather.addEventListener("click", ()=>{
+    if(!navigator.geolocation){ alert("Geolocation wird nicht unterstützt."); return; }
+    btnWeather.disabled=true; btnWeather.textContent="hole…";
+    navigator.geolocation.getCurrentPosition(async (pos)=>{
+      try{
+        const {latitude,longitude}=pos.coords;
+        const url=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=auto`;
+        const res=await fetch(url);
+        const data=await res.json();
+        if(data && data.current){
+          const t=data.current.temperature_2m;
+          if(typeof t==="number") tempEl.value=t.toFixed(1);
+          const w=mapWmoToText(data.current.weather_code);
+          const options=Array.from(weatherEl.options).map(o=>o.value);
+          weatherEl.value = options.includes(w) ? w : "";
+        }else alert("Wetterdaten nicht verfügbar.");
+      }catch{ alert("Wetter konnte nicht geholt werden."); }
+      finally{ btnWeather.disabled=false; btnWeather.textContent="🌦️ Wetter holen"; }
+    }, ()=>{
+      alert("GPS-Berechtigung nötig.");
+      btnWeather.disabled=false; btnWeather.textContent="🌦️ Wetter holen";
+    }, {enableHighAccuracy:true, timeout:8000});
+  });
+
+  function mapWmoToText(code){
+    if(code===0) return "Sonnig";
+    if([1,2].includes(code)) return "Leicht bewölkt";
+    if(code===3) return "Bewölkt";
+    if([45,48].includes(code)) return "Nebel";
+    if([51,53,55].includes(code)) return "Nieselregen";
+    if([61,63,65,80,81,82].includes(code)) return "Regen";
+    if([66,67].includes(code)) return "Starkregen";
+    if([71,73,75,77,85,86].includes(code)) return "Schnee";
+    if([95,96,99].includes(code)) return "Gewitter";
     return "Bewölkt";
   }
 
-  // Init
   updateLibStatus();
   updateButtons();
   renderEntries();
-  setTimeout(() => { updateLibStatus(); updateButtons(); }, 400);
+  setTimeout(()=>{ updateLibStatus(); updateButtons(); }, 400);
 </script>
 </body>
 </html>
