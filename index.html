@@ -6,109 +6,336 @@
   <title>ProtokollApp</title>
 
   <style>
+    /* defaults = HELL */
     :root{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      --bg:#f6f7fb;--card:#fff;--border:#e6e8ef;--border2:#d7dbe7;
-      --primary:#1f6fff;--danger:#ff3b30;--muted:#666;--shadow:0 1px 0 rgba(0,0,0,.03);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #101828;
+      --muted: #667085;
+      --border: #e4e7ec;
+      --border2: #d0d5dd;
+      --shadow: 0 1px 0 rgba(16,24,40,0.04);
+      --primary: #1f6fff;
+      --danger: #d92d20;
+
+      --radius: 16px;
+      --radius2: 14px;
+
+      --pad: 14px;
+      --h1: 18px;
+      --h2: 14px;
+      --base: 16px;
+
+      --focus: 0 0 0 4px rgba(31,111,255,.16);
+      --chipBg: #f2f4f7;
+      --chipBd: #e4e7ec;
+
+      --headerBg: #ffffff;
+      --stickyBg: rgba(255,255,255,.92);
+      --stickyBd: rgba(228,231,236,.9);
+      --glass: saturate(180%) blur(10px);
     }
-    body{margin:0;background:var(--bg);color:#111}
-    header{padding:14px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-    h1{margin:0;font-size:18px}
-    main{max-width:980px;margin:12px auto;padding:0 12px 28px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .sep{height:1px;background:#eef0f6;margin:10px 0}
-    label{display:block;font-size:13px;color:#333;margin-bottom:6px;font-weight:800}
-    input[type="text"],input[type="number"],textarea,select{
-      width:100%;box-sizing:border-box;padding:14px 12px;border:1px solid var(--border2);
-      border-radius:14px;background:#fff;font-size:16px;outline:none
+
+    /* DUNKEL theme overrides */
+    [data-theme="dunkel"]{
+      --bg: #0b1020;
+      --card: #111a33;
+      --text: #f2f4f7;
+      --muted: #c2c7d0;
+      --border: rgba(255,255,255,.10);
+      --border2: rgba(255,255,255,.16);
+      --shadow: 0 10px 24px rgba(0,0,0,.24);
+      --primary: #7aa7ff;
+      --danger: #ff6b6b;
+
+      --chipBg: rgba(255,255,255,.06);
+      --chipBd: rgba(255,255,255,.12);
+
+      --headerBg: rgba(17,26,51,.72);
+      --stickyBg: rgba(17,26,51,.78);
+      --stickyBd: rgba(255,255,255,.12);
+      --focus: 0 0 0 4px rgba(122,167,255,.20);
     }
-    textarea{min-height:110px;resize:vertical}
-    input:focus,textarea:focus,select:focus{border-color:#7aa7ff;box-shadow:0 0 0 4px rgba(122,167,255,.18)}
+
+    body{ margin:0; background: var(--bg); color: var(--text); }
+    header{
+      background: var(--headerBg);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top:0; z-index: 30;
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+    }
+    .header-inner{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 12px 12px;
+      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
+    }
+    h1{ margin:0; font-size: 18px; letter-spacing: .2px; }
+    .subtitle{
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 70vw;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    main{ max-width: 980px; margin: 12px auto; padding: 0 12px 92px; }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--pad);
+      box-shadow: var(--shadow);
+    }
+
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; }
+    .row{ display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    .sep{ height: 1px; background: color-mix(in srgb, var(--border) 60%, transparent); margin: 10px 0; }
+
+    label{ display:block; font-size: 13px; color: color-mix(in srgb, var(--text) 84%, var(--muted)); margin-bottom: 6px; font-weight: 800; }
+
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%; box-sizing:border-box;
+      padding: 14px 12px;
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    input:focus, textarea:focus, select:focus{
+      border-color: color-mix(in srgb, var(--primary) 70%, var(--border2));
+      box-shadow: var(--focus);
+    }
+    select{ appearance: none; }
+
     button{
-      border:1px solid var(--border2);background:#fff;padding:14px 14px;border-radius:14px;cursor:pointer;
-      font-weight:900;font-size:16px;min-height:48px
+      border: 1px solid var(--border2);
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 15px;
+      min-height: 46px;
     }
-    button.primary{background:var(--primary);border-color:var(--primary);color:#fff}
-    button.danger{background:var(--danger);border-color:var(--danger);color:#fff}
-    button:disabled{opacity:.55;cursor:not-allowed}
-    .muted{color:var(--muted);font-size:13px}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:13px}
-    .badge{font-size:12px;padding:5px 10px;background:#f2f5ff;border:1px solid #dbe5ff;border-radius:999px;font-weight:900}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:12px}
-    .warn{color:#8a5b00;font-weight:900}
-    .ok{color:#1a7f37;font-weight:900}
-    .entries{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
-    .entry-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-    .small{font-size:14px;line-height:1.4}
-    .right{text-align:right}
-    .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .thumbs img{width:100%;height:110px;object-fit:cover;border-radius:14px;border:1px solid var(--border);background:#fafbff}
-    @media (min-width:860px){
-      header{padding:18px 16px}
-      .grid{grid-template-columns:repeat(12,1fr);gap:10px}
-      .col-12{grid-column:span 12}
-      .col-6{grid-column:span 6}
-      .col-4{grid-column:span 4}
-      .col-3{grid-column:span 3}
-      .entries{grid-template-columns:repeat(12,1fr)}
-      .entry{grid-column:span 6}
-      .thumbs{grid-template-columns:repeat(6,1fr)}
-      .thumbs img{height:78px}
+    button.primary{ background: var(--primary); border-color: var(--primary); color:#fff; }
+    button.danger{ background: var(--danger); border-color: var(--danger); color:#fff; }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+
+    .muted{ color: var(--muted); font-size: 13px; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; color: var(--muted); }
+
+    .chip{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--chipBg);
+      border: 1px solid var(--chipBd);
+      font-size: 12px;
+      font-weight: 800;
+      color: color-mix(in srgb, var(--text) 86%, var(--muted));
     }
-    .footer-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+
+    .badge{
+      font-size: 12px; padding: 5px 10px;
+      background: color-mix(in srgb, var(--primary) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--primary) 26%, var(--border));
+      border-radius: 999px;
+      font-weight: 900;
+      color: color-mix(in srgb, var(--text) 86%, var(--muted));
+    }
+
+    .section-title{
+      font-size: 14px;
+      font-weight: 900;
+      margin: 0 0 6px 0;
+      letter-spacing: .2px;
+    }
+
+    .entries{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:12px; }
+    .entry-head{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+    .entry-meta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .small{ font-size: 14px; line-height: 1.5; }
+
+    .thumbs{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:10px; }
+    .thumbs img{
+      width:100%; height:110px; object-fit:cover;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      cursor: zoom-in;
+    }
+
+    @media (min-width: 860px){
+      .grid{ grid-template-columns: repeat(12, 1fr); gap: 10px; }
+      .col-12{ grid-column: span 12; }
+      .col-6{ grid-column: span 6; }
+      .col-4{ grid-column: span 4; }
+      .col-3{ grid-column: span 3; }
+      .entries{ grid-template-columns: repeat(12, 1fr); }
+      .entry{ grid-column: span 6; }
+      .thumbs{ grid-template-columns: repeat(6, 1fr); }
+      .thumbs img{ height: 82px; }
+    }
+
+    .statusbar{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 12px 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .stickybar{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 40;
+      background: var(--stickyBg);
+      border-top: 1px solid var(--stickyBd);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+    }
+    .stickybar-inner{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 10px 12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .sticky-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .modal{
+      position: fixed; inset: 0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 60;
+      background: rgba(0,0,0,.76);
+      padding: 12px;
+    }
+    .modal.open{ display:flex; }
+    .modal-card{
+      width: min(980px, 100%);
+      background: #000;
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 14px 40px rgba(0,0,0,.55);
+      position: relative;
+    }
+    .modal-card img{
+      width:100%;
+      height: auto;
+      display:block;
+      max-height: 84vh;
+      object-fit: contain;
+      background:#000;
+    }
+    .modal-top{
+      position:absolute; left:0; right:0; top:0;
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+      padding: 10px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0));
+      color:#fff;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .modal-top button{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.20);
+      color:#fff;
+      min-height: 38px;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+
+    .file-input-hidden{
+      position:absolute !important;
+      width:1px; height:1px;
+      padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0);
+      white-space:nowrap; border:0;
+    }
+    .file-picker-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .file-name{
+      font-size: 13px;
+      color: var(--muted);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: min(520px, 70vw);
+    }
+    .file-clear{ min-height: 46px; }
   </style>
 </head>
 
-<body>
+<body data-theme="hell">
 <header>
-  <div class="row" style="justify-content:space-between;">
-    <h1>ProtokollApp</h1>
-    <span class="pill" id="libStatus">Bibliotheken: <span class="warn">lade…</span></span>
+  <div class="header-inner">
+    <div style="min-width:0;">
+      <h1>Begehungsprotokoll</h1>
+      <div class="subtitle" id="projectSubtitle">Projekt: —</div>
+    </div>
+
+    <div class="row" style="justify-content:flex-end;">
+      <span class="chip" id="libStatus">Libs: <span id="libText">lade…</span></span>
+      <button type="button" id="themeBtn">Design: Hell</button>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="row">
+      <span class="badge" id="countBadge">0 Punkte</span>
+      <span class="chip" id="lastExportChip">Letzter Export: —</span>
+    </div>
+    <div class="mono" id="nowText"></div>
   </div>
 </header>
 
 <main>
   <div class="card">
+    <div class="section-title">Protokollkopf</div>
+    <div class="muted">Diese Angaben erscheinen im PDF-Titel.</div>
+    <div class="sep"></div>
+
     <div class="grid">
-      <div class="col-12">
-        <div class="row" style="justify-content:space-between;">
-          <div class="muted">Protokoll</div>
-          <div class="right">
-            <div class="muted">Datum/Uhrzeit</div>
-            <div class="mono" id="nowText"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 sep"></div>
-
       <div class="col-6">
         <label for="project">Projekt</label>
-        <input id="project" type="text" placeholder="z. B. Streckenbegehung Hanau – Abschnitt Süd" />
+        <input id="project" type="text" placeholder="z. B. Neubau Baugebiet Süd" />
       </div>
       <div class="col-6">
         <label for="creator">Ersteller</label>
         <input id="creator" type="text" placeholder="z. B. Max Mustermann" />
       </div>
+    </div>
+  </div>
 
-      <div class="col-12 sep"></div>
+  <div style="height:12px;"></div>
 
-      <div class="col-6">
-        <label for="site">Standort</label>
-        <input id="site" type="text" placeholder="z. B. Baustelle / Ort / Koordinaten" />
-        <div class="row" style="margin-top:10px;">
-          <button id="btnGeo" type="button">📍 Standort automatisch</button>
-          <span class="muted"></span>
-        </div>
-      </div>
+  <div class="card">
+    <div class="section-title">Rahmendaten</div>
+    <div class="sep"></div>
 
-      <div class="col-3">
-        <label for="trackNo">Streckennummer</label>
-        <input id="trackNo" type="text" inputmode="numeric" placeholder="z. B. 3610" />
-      </div>
-
+    <div class="grid">
       <div class="col-3">
         <label for="weather">Wetter</label>
         <select id="weather">
@@ -125,7 +352,7 @@
           <option>Gewitter</option>
         </select>
         <div class="row" style="margin-top:10px;">
-          <button id="btnWeather" type="button">🌦️ Wetter holen</button>
+          <button id="btnWeather" type="button">Wetter holen</button>
         </div>
       </div>
 
@@ -133,20 +360,34 @@
         <label for="temp">Temperatur °C</label>
         <input id="temp" type="number" step="0.1" placeholder="z. B. 8.5" />
       </div>
+    </div>
+  </div>
 
-      <div class="col-12 sep"></div>
+  <div style="height:12px;"></div>
 
-      <div class="col-12">
-        <div class="row" style="justify-content:space-between;">
-          <div>
-            <strong style="font-size:16px;">Punkt hinzufügen</strong>
-            <div class="muted"></div>
-          </div>
-          <div class="row">
-            <span class="badge" id="countBadge">0 Punkte</span>
-            <button id="btnClearAll" class="danger" type="button" disabled>Alles löschen</button>
-          </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;">
+      <div>
+        <div class="section-title">Neuer Punkt</div>
+        <div class="muted">Pflicht: Mangel / Feststellung</div>
+      </div>
+      <button id="btnClearAll" class="danger" type="button" disabled>Alles löschen</button>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="grid">
+      <div class="col-6">
+        <label for="site">Standort</label>
+        <input id="site" type="text" placeholder="z. B. Baustelle / Ort / Koordinaten" />
+        <div class="row" style="margin-top:10px;">
+          <button id="btnGeo" type="button">Standort automatisch</button>
         </div>
+      </div>
+
+      <div class="col-3">
+        <label for="trackNoPoint">Streckennummer</label>
+        <input id="trackNoPoint" type="text" inputmode="numeric" placeholder="z. B. 3610" />
       </div>
 
       <div class="col-3">
@@ -160,23 +401,14 @@
       </div>
 
       <div class="col-12">
-        <label for="photos">Fotos</label>
-        <input id="photos" type="file" accept="image/*" multiple capture="environment" />
-      </div>
+        <label>Fotos</label>
 
-      <div class="col-12">
-        <div class="row" style="justify-content:flex-end;">
-          <button id="btnAdd" class="primary" type="button">➕ Punkt speichern</button>
-        </div>
-      </div>
+        <input id="photos" class="file-input-hidden" type="file" accept="image/*" multiple capture="environment" />
 
-      <div class="col-12 sep"></div>
-
-      <div class="col-12 footer-actions">
-        <div class="row">
-          <button id="btnExportXlsx" type="button" disabled>⬇️ Excel</button>
-          <button id="btnExportPdf" type="button" disabled>⬇️ PDF</button>
-          <button id="btnExportZip" type="button" disabled>⬇️ ZIP</button>
+        <div class="file-picker-row">
+          <button type="button" id="btnPickPhotos">Fotos auswählen</button>
+          <span class="file-name" id="photoFileInfo">Keine Dateien ausgewählt</span>
+          <button type="button" id="btnClearPhotos" class="file-clear" disabled>Auswahl löschen</button>
         </div>
       </div>
     </div>
@@ -184,6 +416,28 @@
 
   <div class="entries" id="entries"></div>
 </main>
+
+<div class="stickybar">
+  <div class="stickybar-inner">
+    <div class="muted" id="stickyHint">Bereit.</div>
+    <div class="sticky-actions">
+      <button id="btnExportXlsx" type="button" disabled>Excel</button>
+      <button id="btnExportPdf" type="button" disabled>PDF</button>
+      <button id="btnExportZip" type="button" disabled>ZIP</button>
+      <button id="btnAdd" class="primary" type="button">Punkt speichern</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="photoModal" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div id="modalTitle">Foto</div>
+      <button type="button" id="modalClose">Schließen</button>
+    </div>
+    <img id="modalImg" alt="Foto" />
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -196,13 +450,23 @@
 
   const projectEl = $("project");
   const creatorEl = $("creator");
-  const siteEl = $("site");
-  const trackNoEl = $("trackNo");
+  const projectSubtitle = $("projectSubtitle");
+
   const weatherEl = $("weather");
   const tempEl = $("temp");
+  const btnWeather = $("btnWeather");
+
+  const siteEl = $("site");
+  const btnGeo = $("btnGeo");
+  const trackNoPointEl = $("trackNoPoint");
   const kmPointEl = $("kmPoint");
   const noteEl = $("note");
+
   const photosEl = $("photos");
+  const btnPickPhotos = $("btnPickPhotos");
+  const photoFileInfo = $("photoFileInfo");
+  const btnClearPhotos = $("btnClearPhotos");
+
   const entriesEl = $("entries");
 
   const btnAdd = $("btnAdd");
@@ -210,12 +474,19 @@
   const btnExportXlsx = $("btnExportXlsx");
   const btnExportZip = $("btnExportZip");
   const btnExportPdf = $("btnExportPdf");
-  const btnGeo = $("btnGeo");
-  const btnWeather = $("btnWeather");
 
   const countBadge = $("countBadge");
-  const libStatus = $("libStatus");
   const nowText = $("nowText");
+  const libText = $("libText");
+  const lastExportChip = $("lastExportChip");
+  const stickyHint = $("stickyHint");
+
+  const themeBtn = $("themeBtn");
+
+  const photoModal = $("photoModal");
+  const modalImg = $("modalImg");
+  const modalTitle = $("modalTitle");
+  const modalClose = $("modalClose");
 
   function nowISO(){ return new Date().toISOString(); }
   function formatLocal(iso){
@@ -231,27 +502,91 @@
   function uniqId(){ return Math.random().toString(16).slice(2)+"-"+Date.now().toString(16); }
   function safeFileName(s){ return (s||"").replace(/[\\/:*?"<>|]+/g,"_").trim().slice(0,120)||"datei"; }
 
+  /* =========================
+     PDF SAFE TEXT (ROBUST)
+     ========================= */
+  function pdfSafe(v){
+    let s = String(v ?? "");
+    if (s.normalize) s = s.normalize("NFKD");
+    s = s.replace(/[\u0300-\u036f]/g, "");
+    s = s
+      .replaceAll("\u00A0", " ")
+      .replaceAll("\u202F", " ")
+      .replaceAll("\u2007", " ")
+      .replaceAll("–", "-")
+      .replaceAll("—", "-")
+      .replaceAll("−", "-")
+      .replaceAll("’", "'")
+      .replaceAll("‘", "'")
+      .replaceAll("“", '"')
+      .replaceAll("”", '"')
+      .replaceAll("•", "-")
+      .replaceAll("…", "...")
+      .replaceAll("\t", "  ");
+    s = s.replace(/\r/g, "");
+    s = s.replace(/[^\x0A\x20-\xFF]/g, "");
+    s = s.replace(/[ ]{2,}/g, " ").trim();
+    return s;
+  }
+
   function setNowTicker(){ nowText.textContent = new Date().toLocaleString("de-DE"); }
   setNowTicker(); setInterval(setNowTicker,1000);
 
   function updateLibStatus(){
     const okXlsx=!!window.XLSX, okZip=!!window.JSZip, okPdf=!!(window.jspdf && window.jspdf.jsPDF);
-    const span = libStatus.querySelector("span:last-child");
-    if(okXlsx && okZip && okPdf){ span.textContent="bereit"; span.className="ok"; }
-    else{
+    if(okXlsx && okZip && okPdf) { libText.textContent="bereit"; }
+    else {
       const m=[]; if(!okXlsx)m.push("XLSX"); if(!okZip)m.push("ZIP"); if(!okPdf)m.push("PDF");
-      span.textContent="fehlt: "+m.join(", "); span.className="warn";
+      libText.textContent="fehlt: "+m.join(", ");
     }
   }
-  function updateButtons(){
-    const has=state.entries.length>0;
-    btnClearAll.disabled=!has;
-    const okXlsx=!!window.XLSX, okZip=!!window.JSZip, okPdf=!!(window.jspdf && window.jspdf.jsPDF);
-    btnExportXlsx.disabled=!has || !okXlsx;
-    btnExportZip.disabled=!has || !okXlsx || !okZip;
-    btnExportPdf.disabled=!has || !okPdf;
-    countBadge.textContent = `${state.entries.length} Punkt${state.entries.length===1?"":"e"}`;
+
+  function updateProjectSubtitle(){
+    const p = projectEl.value.trim();
+    projectSubtitle.textContent = "Projekt: " + (p || "—");
   }
+  projectEl.addEventListener("input", updateProjectSubtitle);
+  updateProjectSubtitle();
+
+  function updateButtons(){
+    const has = state.entries.length > 0;
+    btnClearAll.disabled = !has;
+
+    const okXlsx=!!window.XLSX, okZip=!!window.JSZip, okPdf=!!(window.jspdf && window.jspdf.jsPDF);
+    btnExportXlsx.disabled = !has || !okXlsx;
+    btnExportZip.disabled  = !has || !okXlsx || !okZip;
+    btnExportPdf.disabled  = !has || !okPdf;
+
+    countBadge.textContent = `${state.entries.length} Punkt${state.entries.length===1?"":"e"}`;
+    stickyHint.textContent = has ? "Bereit zum Export." : "Noch keine Punkte gespeichert.";
+  }
+
+  function escapeHtml(s){
+    return String(s||"")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function refreshPhotoPickerUI(){
+    const files = photosEl.files ? Array.from(photosEl.files) : [];
+    if(!files.length){
+      photoFileInfo.textContent = "Keine Dateien ausgewählt";
+      btnClearPhotos.disabled = true;
+      return;
+    }
+    photoFileInfo.textContent = (files.length === 1) ? files[0].name : `${files.length} Dateien ausgewählt`;
+    btnClearPhotos.disabled = false;
+  }
+  btnPickPhotos.addEventListener("click", () => photosEl.click());
+  photosEl.addEventListener("change", refreshPhotoPickerUI);
+  btnClearPhotos.addEventListener("click", ()=>{
+    photosEl.value = "";
+    refreshPhotoPickerUI();
+  });
+  refreshPhotoPickerUI();
 
   function readFilesAsDataUrls(fileList){
     const files=Array.from(fileList||[]);
@@ -263,45 +598,61 @@
     })));
   }
 
+  function openPhoto(name, dataUrl){
+    modalTitle.textContent = name || "Foto";
+    modalImg.src = dataUrl;
+    photoModal.classList.add("open");
+  }
+  function closePhoto(){
+    photoModal.classList.remove("open");
+    modalImg.src = "";
+  }
+  modalClose.addEventListener("click", closePhoto);
+  photoModal.addEventListener("click", (e)=>{ if(e.target === photoModal) closePhoto(); });
+  window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closePhoto(); });
+
   function renderEntries(){
-    entriesEl.innerHTML="";
+    entriesEl.innerHTML = "";
+    if(!state.entries.length) return;
+
     for(const e of [...state.entries].reverse()){
-      const div=document.createElement("div");
-      div.className="card entry";
+      const div = document.createElement("div");
+      div.className = "card entry";
 
-      const head=document.createElement("div");
-      head.className="entry-head";
+      const head = document.createElement("div");
+      head.className = "entry-head";
 
-      const meta=[ e.trackNo?`Strecke ${e.trackNo}`:null, e.km?`km ${e.km}`:null ].filter(Boolean).join(" · ");
-      const w = e.weatherHeader || "—";
-      const t = e.tempHeader ? `${e.tempHeader}°C` : "—";
-      const s = e.site || "—";
-
-      const left=document.createElement("div");
+      const left = document.createElement("div");
+      left.style.minWidth = "0";
       left.innerHTML = `
-        <div class="small"><strong>${formatLocal(e.tsISO)}</strong> <span class="badge">${w} · ${t}</span></div>
-        <div class="muted">${(s||"—").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")}</div>
-        ${meta ? `<div class="muted"><strong>${meta}</strong></div>`:""}
+        <div class="small"><strong>Punkt ${e.nr}</strong> <span class="muted">· ${escapeHtml(e.date)}</span></div>
+        <div class="entry-meta">
+          ${e.trackNo ? `<span class="chip">Strecke ${escapeHtml(e.trackNo)}</span>` : ``}
+          ${e.km ? `<span class="chip">km ${escapeHtml(e.km)}</span>` : ``}
+          ${e.site ? `<span class="chip">${escapeHtml(e.site)}</span>` : ``}
+        </div>
         <div class="sep" style="margin:10px 0;"></div>
-        <div class="small">${(e.note||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replace(/\n/g,"<br>")}</div>
+        <div class="muted" style="font-weight:800;margin-bottom:6px;">Mangel / Feststellung</div>
+        <div class="small">${escapeHtml(e.note).replace(/\n/g,"<br>")}</div>
       `;
 
-      const right=document.createElement("div");
-      right.className="right";
+      const right = document.createElement("div");
 
-      const info=document.createElement("div");
-      info.className="muted";
-      info.style.marginBottom="8px";
-      info.textContent = `${e.photos.length} Foto${e.photos.length===1?"":"s"}`;
-
-      const delBtn=document.createElement("button");
-      delBtn.type="button";
-      delBtn.className="danger";
-      delBtn.textContent="🗑️ Löschen";
-      delBtn.onclick=()=>{
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "danger";
+      delBtn.textContent = "Löschen";
+      delBtn.onclick = ()=>{
         state.entries = state.entries.filter(x=>x.id!==e.id);
-        renderEntries(); updateButtons();
+        renumberEntries();
+        renderEntries();
+        updateButtons();
       };
+
+      const info = document.createElement("div");
+      info.className = "muted";
+      info.style.marginBottom = "8px";
+      info.textContent = `${e.photos.length} Foto${e.photos.length===1?"":"s"}`;
 
       right.appendChild(info);
       right.appendChild(delBtn);
@@ -311,55 +662,75 @@
       div.appendChild(head);
 
       if(e.photos.length){
-        const thumbs=document.createElement("div");
-        thumbs.className="thumbs";
+        const thumbs = document.createElement("div");
+        thumbs.className = "thumbs";
         for(const p of e.photos.slice(0,12)){
-          const img=document.createElement("img");
-          img.src=p.dataUrl; img.alt=p.name; img.title=p.name;
+          const img = document.createElement("img");
+          img.src = p.dataUrl;
+          img.alt = p.name;
+          img.title = "Tippen zum Vergrößern";
+          img.addEventListener("click", ()=> openPhoto(p.name, p.dataUrl));
           thumbs.appendChild(img);
         }
         div.appendChild(thumbs);
       }
+
       entriesEl.appendChild(div);
     }
+  }
+
+  function renumberEntries(){
+    state.entries.forEach((e, idx)=> e.nr = idx + 1);
   }
 
   btnAdd.addEventListener("click", async ()=>{
     const note = noteEl.value.trim();
     if(!note){ alert("Bitte Mangel/Feststellung eingeben."); return; }
 
-    btnAdd.disabled=true; btnAdd.textContent="speichere…";
+    btnAdd.disabled = true;
+    btnAdd.textContent = "Speichere…";
+
     try{
+      const ts = nowISO();
       const photos = await readFilesAsDataUrls(photosEl.files);
+
       state.entries.push({
         id: uniqId(),
-        tsISO: nowISO(),
+        tsISO: ts,
+        date: formatLocal(ts),
+        nr: state.entries.length + 1,
+
         site: siteEl.value.trim(),
-        trackNo: trackNoEl.value.trim(),
+        trackNo: trackNoPointEl.value.trim(),
         km: kmPointEl.value.trim(),
+
         note,
-        photos,
-        weatherHeader: weatherEl.value.trim(),
-        tempHeader: tempEl.value.toString().trim()
+        photos
       });
 
-      kmPointEl.value="";
-      noteEl.value="";
-      photosEl.value="";
-      noteEl.focus();
+      trackNoPointEl.value = "";
+      kmPointEl.value = "";
+      noteEl.value = "";
+      photosEl.value = "";
+      refreshPhotoPickerUI();
 
-      renderEntries(); updateButtons();
+      noteEl.focus();
+      renderEntries();
+      updateButtons();
     }catch(e){
       console.error(e);
       alert("Fehler beim Lesen der Fotos.");
     }finally{
-      btnAdd.disabled=false; btnAdd.textContent="➕ Punkt speichern";
+      btnAdd.disabled = false;
+      btnAdd.textContent = "Punkt speichern";
     }
   });
 
   btnClearAll.addEventListener("click", ()=>{
     if(!confirm("Wirklich alle Punkte löschen?")) return;
-    state.entries=[]; renderEntries(); updateButtons();
+    state.entries = [];
+    renderEntries();
+    updateButtons();
   });
 
   function buildBaseName(){
@@ -372,9 +743,9 @@
   }
 
   function buildWorkbook(){
-    const rows = state.entries.map((e,i)=>({
-      "Nr.": i+1,
-      "Datum/Uhrzeit": formatLocal(e.tsISO),
+    const rows = state.entries.map((e)=>({
+      "Nr.": e.nr,
+      "Datum/Uhrzeit": e.date,
       "Projekt": projectEl.value.trim() || "",
       "Ersteller": creatorEl.value.trim() || "",
       "Standort": e.site || "",
@@ -392,9 +763,19 @@
     return wb;
   }
 
+  function setLastExport(label){
+    const t = new Date().toLocaleString("de-DE",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+    lastExportChip.textContent = `Letzter Export: ${label} · ${t}`;
+  }
+
   btnExportXlsx.addEventListener("click", ()=>{
-    try{ XLSX.writeFile(buildWorkbook(), buildBaseName()+".xlsx"); }
-    catch(e){ console.error(e); alert("Excel-Export fehlgeschlagen."); }
+    try{
+      XLSX.writeFile(buildWorkbook(), buildBaseName()+".xlsx");
+      setLastExport("Excel");
+    }catch(e){
+      console.error(e);
+      alert("Excel-Export fehlgeschlagen.");
+    }
   });
 
   function guessExt(p){
@@ -433,15 +814,22 @@
         for(let i=0;i<e.photos.length;i++){
           const p=e.photos[i];
           const ext=guessExt(p);
-          imgFolder.file(`Punkt_${formatDateDE(new Date(e.tsISO))}_${String(i+1).padStart(2,"0")}.${ext}`, dataUrlToUint8(p.dataUrl));
+          imgFolder.file(`Punkt_${e.nr}_${String(i+1).padStart(2,"0")}.${ext}`, dataUrlToUint8(p.dataUrl));
         }
       }
+
       const blob=await zip.generateAsync({type:"blob"});
       downloadBlob(blob, base+".zip");
-    }catch(e){ console.error(e); alert("ZIP-Export fehlgeschlagen."); }
+      setLastExport("ZIP");
+    }catch(e){
+      console.error(e);
+      alert("ZIP-Export fehlgeschlagen.");
+    }
   });
 
-  // ===== PDF (FIXED) =====
+  /* =========================
+     PDF EXPORT (STABIL + FIX: Kein Quetschen)
+     ========================= */
   function fitRect(w,h,maxW,maxH){
     const r=Math.min(maxW/w, maxH/h);
     return { w:w*r, h:h*r };
@@ -478,13 +866,14 @@
   btnExportPdf.addEventListener("click", async ()=>{
     try{
       btnExportPdf.disabled=true;
-      btnExportPdf.textContent="erstelle…";
+      btnExportPdf.textContent="Erstelle…";
       await exportPdfProfessional();
+      setLastExport("PDF");
     }catch(e){
       console.error(e);
-      alert("PDF-Export fehlgeschlagen. (Konsole/F12 zeigt Details)");
+      alert("PDF-Export fehlgeschlagen: " + (e?.message || e));
     }finally{
-      btnExportPdf.textContent="⬇️ PDF";
+      btnExportPdf.textContent="PDF";
       updateButtons();
     }
   });
@@ -494,11 +883,10 @@
     const doc = new jsPDF({ unit:"mm", format:"a4" });
 
     const margin=10;
-    const project = projectEl.value.trim() || "—";
-    const creator = creatorEl.value.trim() || "—";
+    const project = pdfSafe(projectEl.value.trim() || "—");
+    const creator = pdfSafe(creatorEl.value.trim() || "—");
     const createdDate = formatDateDE(new Date());
 
-    // Titel
     doc.setFont("helvetica","bold"); doc.setFontSize(14);
     doc.text("Begehungsprotokoll", margin, 14);
 
@@ -510,12 +898,9 @@
     doc.text(`Ersteller: ${creator}`, margin, 25);
     doc.text(`Erstellt am: ${createdDate}`, margin, 30);
 
-    // Wetter/Temp nur oben
     const headerRows = [
-      ["Standort", siteEl.value.trim() || "—"],
-      ["Streckennummer", trackNoEl.value.trim() || "—"],
-      ["Wetter", weatherEl.value.trim() || "—"],
-      ["Temperatur (°C)", tempEl.value.toString().trim() || "—"]
+      ["Wetter", pdfSafe(weatherEl.value.trim() || "—")],
+      ["Temperatur (°C)", pdfSafe(tempEl.value.toString().trim() || "—")]
     ];
 
     doc.autoTable({
@@ -528,8 +913,7 @@
 
     const startY = doc.lastAutoTable.finalY + 6;
 
-    // A4 nutzbar: 190mm (bei 10mm Rand) -> Summe MUSS <= 190!
-    const colW = { nr: 8, date: 20, km: 14, text: 78, photo: 70 }; // Summe = 190 ✅
+    const colW = { nr: 8, date: 34, track: 18, km: 14, text: 46, photo: 70 }; // 190
 
     const photoCache = new Map();
     async function prepPhoto(p){
@@ -543,25 +927,21 @@
       return obj;
     }
 
-    const maxRowH = 120; // große Fotos, aber stabil für A4
+    const maxRowH = 120;
     const minRowH = 42;
 
-    const rows = [];
-    for(let i=0;i<state.entries.length;i++){
-      const e=state.entries[i];
+    const rowsMeta = [];
+    const body = [];
 
-      const meta = [
+    for(const e of state.entries){
+      const textBlock = pdfSafe([
         e.site ? `Standort: ${e.site}` : null,
-        e.trackNo ? `Strecke: ${e.trackNo}` : null,
-        e.km ? `km: ${e.km}` : null
-      ].filter(Boolean).join("\n");
+        e.note ? e.note : ""
+      ].filter(Boolean).join("\n\n").trim());
 
-      const textBlock = (meta ? meta + "\n\n" : "") + e.note;
+      const p1 = e.photos?.[0] ? await prepPhoto(e.photos[0]) : null;
+      const p2 = e.photos?.[1] ? await prepPhoto(e.photos[1]) : null;
 
-      const p1 = e.photos[0] ? await prepPhoto(e.photos[0]) : null; // 1–2 Bilder groß
-      const p2 = e.photos[1] ? await prepPhoto(e.photos[1]) : null;
-
-      // Zeilenhöhe anhand Foto(s) berechnen (maximale Darstellung in Spalte)
       let rowH = minRowH;
       const usableW = colW.photo - 4;
       if(p1 && !p2){
@@ -572,90 +952,110 @@
         rowH = Math.min(maxRowH, Math.max(minRowH, h1 + h2 + 8));
       }
 
-      rows.push({
-        nr: String(i+1),
-        date: formatDateDE(new Date(e.tsISO)),
-        km: e.km || "—",
-        text: textBlock.trim(),
+      const meta = {
+        hasPhoto: (e.photos?.length || 0) > 0,
         photos: [p1,p2].filter(Boolean),
-        photoCount: e.photos.length,
+        photoCount: e.photos?.length || 0,
         rowH
-      });
+      };
+      rowsMeta.push(meta);
+
+      body.push([
+        pdfSafe(String(e.nr ?? "")),
+        pdfSafe(e.date || formatLocal(e.tsISO)),
+        pdfSafe(e.trackNo || "—"),
+        pdfSafe(e.km || "—"),
+        textBlock,
+        ""
+      ]);
     }
 
     doc.autoTable({
       startY,
       theme:"grid",
+
+      /* FIX: Zeilen NICHT quetschen -> ganze Zeile auf nächste Seite */
+      rowPageBreak: "avoid",
+      pageBreak: "auto",
+
       margin:{ left: margin, right: margin },
-      head:[[ "Nr.", "Datum", "km", "Mangel / Feststellung", "Fotos" ]],
-      body: rows.map(r => [r.nr, r.date, r.km, r.text, ""]),
+      head:[[ "Nr.", "Datum/Uhrzeit", "Strecke", "km", "Mangel / Feststellung", "Fotos" ]],
+      body,
       styles:{ fontSize:9, cellPadding:2, valign:"top" },
       headStyles:{ fillColor:[240,240,240], fontStyle:"bold" },
       columnStyles:{
         0:{ cellWidth: colW.nr },
         1:{ cellWidth: colW.date },
-        2:{ cellWidth: colW.km },
-        3:{ cellWidth: colW.text },
-        4:{ cellWidth: colW.photo }
+        2:{ cellWidth: colW.track },
+        3:{ cellWidth: colW.km },
+        4:{ cellWidth: colW.text },
+        5:{ cellWidth: colW.photo }
       },
       didParseCell:(data)=>{
-        if(data.section!=="body") return;
-        const r = rows[data.row.index];
-        data.cell.styles.minCellHeight = r.rowH;
+        try{
+          if(data.section!=="body") return;
+          const idx = data.row.index;
+          const meta = rowsMeta[idx];
+          if(!meta) return;
+          data.cell.styles.minCellHeight = meta.rowH;
+        }catch(e){}
       },
       didDrawCell:(data)=>{
-        if(data.section!=="body") return;
-        if(data.column.index!==4) return;
+        try{
+          if(data.section!=="body") return;
+          if(data.column.index!==5) return;
 
-        const r = rows[data.row.index];
-        const cell = data.cell;
+          const idx = data.row.index;
+          const meta = rowsMeta[idx];
+          if(!meta) return;
 
-        const pad=1.5;
-        const x=cell.x+pad, y=cell.y+pad;
-        const w=cell.width-pad*2, h=cell.height-pad*2;
+          const cell = data.cell;
+          const pad=1.5;
+          const x=cell.x+pad, y=cell.y+pad;
+          const w=cell.width-pad*2, h=cell.height-pad*2;
 
-        if(!r.photos.length){
-          doc.setFont("helvetica","normal"); doc.setFontSize(9);
-          doc.text("—", cell.x+cell.width/2, cell.y+8, {align:"center"});
-          return;
-        }
+          if(!meta.photos.length){
+            doc.setFont("helvetica","normal"); doc.setFontSize(9);
+            doc.text("—", cell.x+cell.width/2, cell.y+8, {align:"center"});
+            return;
+          }
 
-        const gap=2.2;
-        const slots = r.photos.length>=2 ? 2 : 1;
-        const slotH = slots===2 ? (h-gap)/2 : h;
+          const gap=2.2;
+          const slots = meta.photos.length>=2 ? 2 : 1;
+          const slotH = slots===2 ? (h-gap)/2 : h;
 
-        for(let i=0;i<Math.min(2,r.photos.length);i++){
-          const ph=r.photos[i];
-          const boxY=y + i*(slotH+gap);
-          const fitted = fitRect(ph.w, ph.h, w, slotH);
-          const ix=x + (w-fitted.w)/2;
-          const iy=boxY + (slotH-fitted.h)/2;
-          try{ doc.addImage(ph.url, ph.fmt, ix, iy, fitted.w, fitted.h); }catch(e){}
-        }
+          for(let i=0;i<Math.min(2,meta.photos.length);i++){
+            const ph=meta.photos[i];
+            const boxY=y + i*(slotH+gap);
+            const fitted = fitRect(ph.w, ph.h, w, slotH);
+            const ix=x + (w-fitted.w)/2;
+            const iy=boxY + (slotH-fitted.h)/2;
+            doc.addImage(ph.url, ph.fmt, ix, iy, fitted.w, fitted.h);
+          }
 
-        if(r.photoCount>2){
-          doc.setFont("helvetica","bold"); doc.setFontSize(10);
-          doc.text(`+${r.photoCount-2}`, cell.x+cell.width-2, cell.y+cell.height-2, {align:"right"});
-        }
+          if(meta.photoCount>2){
+            doc.setFont("helvetica","bold"); doc.setFontSize(10);
+            doc.text(`+${meta.photoCount-2}`, cell.x+cell.width-2, cell.y+cell.height-2, {align:"right"});
+          }
+        }catch(e){}
       }
     });
 
-    // Footer
     const pageCount = doc.internal.getNumberOfPages();
     for(let p=1;p<=pageCount;p++){
       doc.setPage(p);
       doc.setFont("helvetica","normal"); doc.setFontSize(9);
-      doc.text(`Projekt: ${safeFileName(project).slice(0,45)}  |  Ersteller: ${safeFileName(creator).slice(0,35)}`, margin, 292);
+      doc.text(pdfSafe(`Projekt: ${project}  |  Ersteller: ${creator}`), margin, 292);
       doc.text(`Seite ${p} / ${pageCount}`, 210-margin, 292, {align:"right"});
     }
 
     doc.save(buildBaseName()+".pdf");
   }
 
-  // Standort
+  /* ===== Location + Weather ===== */
   btnGeo.addEventListener("click", ()=>{
     if(!navigator.geolocation){ alert("Geolocation wird nicht unterstützt."); return; }
-    btnGeo.disabled=true; btnGeo.textContent="ermittle…";
+    btnGeo.disabled=true; btnGeo.textContent="…";
     navigator.geolocation.getCurrentPosition(async (pos)=>{
       const {latitude,longitude}=pos.coords;
       try{
@@ -666,18 +1066,17 @@
       }catch{
         siteEl.value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
       }finally{
-        btnGeo.disabled=false; btnGeo.textContent="📍 Standort automatisch";
+        btnGeo.disabled=false; btnGeo.textContent="Standort automatisch";
       }
     }, ()=>{
       alert("Standort nicht verfügbar (Berechtigung/HTTPS).");
-      btnGeo.disabled=false; btnGeo.textContent="📍 Standort automatisch";
+      btnGeo.disabled=false; btnGeo.textContent="Standort automatisch";
     }, {enableHighAccuracy:true, timeout:8000});
   });
 
-  // Wetter
   btnWeather.addEventListener("click", ()=>{
     if(!navigator.geolocation){ alert("Geolocation wird nicht unterstützt."); return; }
-    btnWeather.disabled=true; btnWeather.textContent="hole…";
+    btnWeather.disabled=true; btnWeather.textContent="…";
     navigator.geolocation.getCurrentPosition(async (pos)=>{
       try{
         const {latitude,longitude}=pos.coords;
@@ -690,12 +1089,15 @@
           const w=mapWmoToText(data.current.weather_code);
           const options=Array.from(weatherEl.options).map(o=>o.value);
           weatherEl.value = options.includes(w) ? w : "";
-        }else alert("Wetterdaten nicht verfügbar.");
-      }catch{ alert("Wetter konnte nicht geholt werden."); }
-      finally{ btnWeather.disabled=false; btnWeather.textContent="🌦️ Wetter holen"; }
+        } else alert("Wetterdaten nicht verfügbar.");
+      }catch{
+        alert("Wetter konnte nicht geholt werden.");
+      }finally{
+        btnWeather.disabled=false; btnWeather.textContent="Wetter holen";
+      }
     }, ()=>{
       alert("GPS-Berechtigung nötig.");
-      btnWeather.disabled=false; btnWeather.textContent="🌦️ Wetter holen";
+      btnWeather.disabled=false; btnWeather.textContent="Wetter holen";
     }, {enableHighAccuracy:true, timeout:8000});
   });
 
@@ -711,6 +1113,20 @@
     if([95,96,99].includes(code)) return "Gewitter";
     return "Bewölkt";
   }
+
+  /* ===== Theme ===== */
+  function getTheme(){ return document.body.getAttribute("data-theme") || "hell"; }
+  function setTheme(t){
+    document.body.setAttribute("data-theme", t);
+    themeBtn.textContent = "Design: " + (t === "dunkel" ? "Dunkel" : "Hell");
+    localStorage.setItem("proto_theme", t);
+  }
+  themeBtn.addEventListener("click", ()=>{
+    setTheme(getTheme() === "dunkel" ? "hell" : "dunkel");
+  });
+  const savedTheme = localStorage.getItem("proto_theme");
+  if(savedTheme === "hell" || savedTheme === "dunkel") setTheme(savedTheme);
+  else setTheme("hell");
 
   updateLibStatus();
   updateButtons();
